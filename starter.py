@@ -1,15 +1,20 @@
-from langchain.document_loaders import ArxivLoader
-from langchain.agents.agent_toolkits import GmailToolkit
+import arxiv
+import dotenv
 import os
+
+from langchain.agents.agent_toolkits import GmailToolkit
 from langchain.agents import initialize_agent, AgentType
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain import LLMChain
 from langchain.callbacks import get_openai_callback
-import arxiv
+
+dotenv.load_dotenv()
+
+OPEN_AI_API_KEY = os.getenv("OPEN_AI_API_KEY")
 
 # Topic of the newsletter you want to write about
-query = "LLM"  # How specific do we want this to be?
+query = "LLM"
 
 search = arxiv.Search(
     query=query,
@@ -51,9 +56,6 @@ with get_openai_callback() as cb:
 
     PROMPT_NEWSLETTER = PromptTemplate(
         template=prompt_newsletter_template, input_variables=["text"])
-
-    # Set the OpenAI API key
-    os.environ['OPENAI_API_KEY'] = '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'
 
     # Initialize the language model
     llm = ChatOpenAI(

@@ -8,3 +8,4 @@ google-auth-httplib2
 beautifulsoup4
 arxiv
 pymupdf
+python-dotenv
